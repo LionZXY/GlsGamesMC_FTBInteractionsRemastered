@@ -1,0 +1,9 @@
+services:
+  mc_skyfactory:
+    image: glitchless/gli_mc_ftb_interactions_remastered:latest
+    restart: unless-stopped
+    ports:
+      - "25568:25565"
+    volumes:
+      - ./world:/minecraft/world
+      - ./logs:/minecraft/logs
