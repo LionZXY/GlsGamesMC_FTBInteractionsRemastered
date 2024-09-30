@@ -17,7 +17,8 @@ RUN ./linux $MODPACK_ID $MODPACK_VERSION_ID --auto --noscript --nojava
 RUN rm mods/simple-rpc-1.12.2-3.1.1.jar
 
 COPY eula.txt eula.txt
-COPY server.properties /minecraft/server.properties
+COPY server.properties server.properties
+COPY ops.json ops.json
 #COPY mods/* mods/
 
 COPY server_start.sh server_start.sh
