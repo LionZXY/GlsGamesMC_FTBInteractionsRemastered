@@ -1,21 +1,25 @@
 FROM openjdk:8-alpine
 
-RUN apk add --no-cache wget bash unzip sed
+RUN apk add --no-cache bash sed
 
-RUN wget https://media.forgecdn.net/files/3565/687/SkyFactory-4_Server_4_2_4.zip
+WORKDIR /minecraft
 
-RUN mkdir -p /minecraft/ && unzip SkyFactory-4_Server_4_2_4.zip -d /minecraft/ && chmod +x /minecraft/Install.sh
+ENV MODPACK_ID=111
+ENV MODPACK_VERSION_ID=12490
+ENV EXTRA_JVM_ARGS=
 
-RUN cd /minecraft/ && ./Install.sh
-RUN chmod +x /minecraft/ServerStart.sh
+ADD https://api.modpacks.ch/public/modpack/$MODPACK_ID/$MODPACK_VERSION_ID/server/linux linux
+RUN chmod +x linux
 
-ADD settings.sh /minecraft/settings.sh
-ADD eula.txt /minecraft/eula.txt
-ADD server.properties /minecraft/server.properties
-ADD ops.json /minecraft/ops.json
-ADD mods/* /minecraft/mods/
-RUN sed -i -e 's/B:"Prestige Enabled Default"=false/B:"Prestige Enabled Default"=true/g' /minecraft/config/prestige.cfg && \
-	sed -i -e 's/B:NewWorldMode=false/B:NewWorldMode=true/g' /minecraft/config/prestige.cfg
+RUN ./linux $MODPACK_ID $MODPACK_VERSION_ID --auto --noscript --nojava
 
+# Crashing on Apple Silicon. Luckily, we don't actually need this mod.
+RUN rm mods/simple-rpc-1.12.2-3.1.1.jar
 
-CMD cd /minecraft/ && ./ServerStart.sh
+COPY eula.txt eula.txt
+COPY server.properties /minecraft/server.properties
+COPY mods/* mods/
+
+COPY server_start.sh server_start.sh
+RUN chmod +x server_start.sh
+CMD ["./server_start.sh"]
