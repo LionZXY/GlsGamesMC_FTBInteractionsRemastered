@@ -5,7 +5,7 @@ RUN apk add --no-cache bash sed
 WORKDIR /minecraft
 
 ENV MODPACK_ID=111
-ENV MODPACK_VERSION_ID=12490
+ENV MODPACK_VERSION_ID=12411
 ENV EXTRA_JVM_ARGS=
 
 ADD https://api.modpacks.ch/public/modpack/$MODPACK_ID/$MODPACK_VERSION_ID/server/linux linux
