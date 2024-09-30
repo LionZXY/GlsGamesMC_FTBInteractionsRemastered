@@ -18,7 +18,7 @@ RUN rm mods/simple-rpc-1.12.2-3.1.1.jar
 
 COPY eula.txt eula.txt
 COPY server.properties /minecraft/server.properties
-COPY mods/* mods/
+#COPY mods/* mods/
 
 COPY server_start.sh server_start.sh
 RUN chmod +x server_start.sh
